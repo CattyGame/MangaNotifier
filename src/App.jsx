@@ -361,14 +361,6 @@ export default function App() {
     return null;
   };
 
-  const handleOpenExternal = (url) => {
-    if (window.electronAPI?.openExternal) {
-      window.electronAPI.openExternal(url);
-    } else {
-      window.open(url, '_blank');
-    }
-  };
-
   // Reader Open Handler
   const handleOpenReader = (manga, chapter = null) => {
     const targetChap = chapter || (manga.chapters && manga.chapters[0]);
