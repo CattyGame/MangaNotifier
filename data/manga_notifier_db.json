@@ -1,0 +1,12 @@
+{
+  "mangas": [],
+  "history": [],
+  "settings": {
+    "pollIntervalMinutes": 15,
+    "discordWebhook": "",
+    "soundEnabled": true,
+    "startupWithWindows": false,
+    "closeToTray": true,
+    "autoOpenBrowser": false
+  }
+}

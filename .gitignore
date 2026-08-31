@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Production / Build output
+dist/
+dist_electron/
+build/
+release/
+out/
+
+# Android build & IDE artifacts
+android/.gradle/
+android/build/
+android/app/build/
+android/capacitor-cordova-android-plugins/build/
+android/local.properties
+android/.idea/
+android/.gradle
+android/captures/
+*.iml
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS & Temp files
+.DS_Store
+Thumbs.db
+*.tmp
+*.bak
+
+# Local Database & User State
+data/database.json
+data/settings.json
+data/*.backup.json

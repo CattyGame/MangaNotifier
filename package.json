@@ -1,0 +1,71 @@
+{
+  "name": "manga-notifier-desktop",
+  "version": "1.0.0",
+  "description": "Desktop app to track manga chapters and receive notifications",
+  "main": "electron/main.js",
+  "scripts": {
+    "dev": "concurrently \"vite\" \"cross-env NODE_ENV=development electron .\"",
+    "build:react": "vite build",
+    "start": "electron .",
+    "build:fast": "node fast_build.js",
+    "build:exe": "node fast_build.js",
+    "package": "node fast_build.js"
+  },
+  "build": {
+    "appId": "com.manganotifier.desktop",
+    "productName": "Manga Notifier",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "dir",
+        "portable"
+      ]
+    }
+  },
+  "keywords": [
+    "manga",
+    "notifier",
+    "electron",
+    "react",
+    "desktop"
+  ],
+  "author": "Antigravity",
+  "license": "MIT",
+  "dependencies": {
+    "@capacitor/android": "^8.5.0",
+    "@capacitor/app": "^8.1.1",
+    "@capacitor/core": "^8.5.0",
+    "@capacitor/local-notifications": "^8.3.1",
+    "axios": "^1.7.9",
+    "cheerio": "^1.0.0",
+    "clsx": "^2.1.1",
+    "html5-qrcode": "^2.3.8",
+    "lucide-react": "^0.475.0",
+    "qrcode": "^1.5.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwind-merge": "^3.0.1",
+    "ws": "^8.21.3"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.5.0",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
+    "electron": "^34.2.0",
+    "electron-builder": "^25.1.8",
+    "postcss": "^8.5.2",
+    "tailwindcss": "^3.4.17",
+    "vite": "^6.1.0"
+  }
+}

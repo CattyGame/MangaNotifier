@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Manga Notifier</string>
+    <string name="title_activity_main">Manga Notifier</string>
+    <string name="package_name">com.manganotifier.app</string>
+    <string name="custom_url_scheme">com.manganotifier.app</string>
+</resources>

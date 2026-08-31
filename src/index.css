@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body {
+    @apply bg-background text-slate-100 font-sans antialiased;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* 144Hz Ultra-Smooth Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0d1117;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #21262d;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #30363d;
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(147, 51, 234, 0.4) transparent;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* GPU Accelerated Smooth Scroll Container */
+.smooth-scroll-container {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: scroll-position;
+  contain: content;
+}
+
+/* Glassmorphism helpers */
+.glass-panel {
+  background: rgba(22, 27, 34, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(48, 54, 61, 0.6);
+}
+
+.glass-modal {
+  background: rgba(13, 17, 23, 0.92);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+/* Glowing text and borders */
+.glow-text-primary {
+  text-shadow: 0 0 12px rgba(139, 92, 246, 0.6);
+}
+
+.glow-text-cyan {
+  text-shadow: 0 0 12px rgba(6, 182, 212, 0.6);
+}
+
+/* Animation utilities */
+@keyframes pulseBadge {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.7);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px 4px rgba(244, 63, 94, 0.4);
+  }
+}
+
+.animate-pulse-badge {
+  animation: pulseBadge 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+/* GPU Layer Promoted Image & Card Transforms for 144Hz Smoothness */
+.will-change-transform {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
