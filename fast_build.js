@@ -105,4 +105,7 @@ async function pack() {
   console.log('======================================================\n');
 }
 
-pack().catch(console.error);
+pack().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
