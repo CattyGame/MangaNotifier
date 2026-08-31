@@ -62,12 +62,13 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Build Web Assets & Sync Capacitor
+      - name: Build Web Assets & Copy to Android
         run: |
-          sed -i -e 's/\r$//' android/gradlew
-          chmod +x android/gradlew
           npm run build:react
-          npx cap sync android
+          mkdir -p android/app/src/main/assets/public
+          cp -r dist/* android/app/src/main/assets/public/
+          tr -d '\r' < android/gradlew > android/gradlew.tmp && mv android/gradlew.tmp android/gradlew
+          chmod +x android/gradlew
 
       - name: Build Android APK with Gradle
         run: |
