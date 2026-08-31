@@ -28,7 +28,6 @@ jobs:
 
       - name: Build React & Fast Package Desktop
         run: |
-          npm run build:react
           node fast_build.js
 
       - name: Compress Windows Portable Package
@@ -43,7 +42,7 @@ jobs:
 
   build-android:
     name: Build Android APK
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -66,21 +65,17 @@ jobs:
       - name: Build Web Assets & Copy to Android
         run: |
           npm run build:react
-          mkdir -p android/app/src/main/assets/public
-          cp -r dist/* android/app/src/main/assets/public/
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+          if (!(Test-Path "android/app/src/main/assets/public")) { New-Item -ItemType Directory -Force -Path "android/app/src/main/assets/public" }
+          Copy-Item -Path "dist/*" -Destination "android/app/src/main/assets/public" -Recurse -Force
 
       - name: Build Android APK with Gradle
         run: |
           cd android
-          chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon
+          .\gradlew.bat assembleDebug --no-daemon
 
       - name: Copy & Rename APK
         run: |
-          cp android/app/build/outputs/apk/debug/app-debug.apk Manga-Notifier-Android.apk
+          Copy-Item -Path "android/app/build/outputs/apk/debug/app-debug.apk" -Destination "Manga-Notifier-Android.apk" -Force
 
       - name: Upload Android Artifact
         uses: actions/upload-artifact@v4
