@@ -147,4 +147,4 @@ Dự án được phát triển phục vụ mục đích cá nhân và phi thư�
 Mọi nội dung truyện tranh thuộc bản quyền của tác giả và các nhóm dịch gốc.
 
 ## P.S
-Đây là dự án cá nhân đầu tiên của mình nên vẫn sẽ nhiều bugs. Nên với dự án này, bất kì cũng có thể góp sức để cùng nhau phát triển và hoàn thiện hơn cho dự án này. Thank yous <3
+Đây là dự án cá nhân đầu tiên của mình nên vẫn sẽ nhiều bugs. Nên với dự án này, bất kì ai cũng có thể góp sức  phát triển và hoàn thiện app. Thank yous <3
