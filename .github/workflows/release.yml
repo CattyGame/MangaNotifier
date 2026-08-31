@@ -1,0 +1,140 @@
+name: Release Manga Notifier
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    name: Build Windows Desktop
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build React & Fast Package Desktop
+        run: |
+          npm run build:react
+          node fast_build.js
+
+      - name: Compress Windows Portable Package
+        run: |
+          Compress-Archive -Path "release/Manga Notifier/*" -DestinationPath "Manga-Notifier-Windows-Portable.zip"
+
+      - name: Upload Windows Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-portable
+          path: Manga-Notifier-Windows-Portable.zip
+
+  build-android:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Java JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Web Assets & Sync Capacitor
+        run: |
+          npm run build:react
+          npx cap sync android
+
+      - name: Build Android APK with Gradle
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Copy & Rename APK
+        run: |
+          cp android/app/build/outputs/apk/debug/app-debug.apk Manga-Notifier-Android.apk
+
+      - name: Upload Android Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-apk
+          path: Manga-Notifier-Android.apk
+
+  publish-release:
+    name: Publish GitHub Release
+    needs: [build-windows, build-android]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Download Windows Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-portable
+          path: release-assets/
+
+      - name: Download Android Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: android-apk
+          path: release-assets/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Manga Notifier ${{ github.ref_name }}"
+          body: |
+            ## 🎉 Manga Notifier Release ${{ github.ref_name }} (Cross-Platform PC & Mobile)
+
+            Ứng dụng theo dõi chương mới, quét đa luồng siêu tốc và đọc truyện tranh in-app không quảng cáo với tần số quét **144Hz / 144 FPS**.
+
+            ### 🌟 Điểm nổi bật trong bản phát hành:
+            - 🖥️ **Windows Desktop**:
+              - Trình quét ngầm đa luồng (6 workers song song) quét 50+ bộ truyện chỉ trong 5-8 giây.
+              - Bộ lọc thông minh chống thông báo chap ảo `isChapterTrulyRecent()`.
+              - Trình đọc in-app không quảng cáo, ổn định cache ảnh chống reload/chớp nháy khi treo máy.
+              - Đóng gói Portable tiện lợi, chạy ngay không cần cài đặt.
+            - 📱 **Android Mobile**:
+              - Tự động mở khóa tần số quét màn hình 144Hz / 120Hz native.
+              - Nhận thông báo đẩy cục bộ (Local Notifications) khi có chương mới.
+              - Floating Navigation Pill Widget 2 nút tối ưu cho ngón tay cái.
+            - ⚡ **Đồng bộ 2 chiều thời gian thực**:
+              - Kết nối siêu nhanh qua WebSocket (< 30ms) qua mạng Wi-Fi LAN hoặc cáp USB.
+              - Tự động đồng bộ bù và hợp nhất 2 chiều (Union Merge) bảo toàn 100% dữ liệu.
+
+            ---
+
+            ### 📦 Tải xuống và cài đặt:
+            - **Windows**: Tải file `Manga-Notifier-Windows-Portable.zip`, giải nén và mở `Manga Notifier.exe` để sử dụng ngay.
+            - **Android**: Tải file `Manga-Notifier-Android.apk` và cài đặt lên điện thoại.
+          draft: false
+          prerelease: false
+          files: |
+            release-assets/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
