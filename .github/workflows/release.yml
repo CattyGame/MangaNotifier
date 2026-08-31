@@ -64,14 +64,14 @@ jobs:
 
       - name: Build Web Assets & Sync Capacitor
         run: |
+          sed -i -e 's/\r$//' android/gradlew
+          chmod +x android/gradlew
           npm run build:react
           npx cap sync android
 
       - name: Build Android APK with Gradle
         run: |
           cd android
-          sed -i -e 's/\r$//' gradlew
-          chmod +x gradlew
           ./gradlew assembleDebug --no-daemon
 
       - name: Copy & Rename APK
