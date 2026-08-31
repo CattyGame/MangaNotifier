@@ -4,11 +4,11 @@ node_modules/
 .pnp.js
 
 # Production / Build output
-dist/
-dist_electron/
-build/
-release/
-out/
+/dist/
+/dist_electron/
+/build/
+/release/
+/out/
 
 # Android build & IDE artifacts
 android/.gradle/
